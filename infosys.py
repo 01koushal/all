@@ -9,7 +9,7 @@ from pyzbar.pyzbar import decode
 from datetime import datetime
 
 # Set up Tesseract OCR
-pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+#pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 
 def extract_qr_from_pdf(pdf_path):
     doc = fitz.open(pdf_path)
