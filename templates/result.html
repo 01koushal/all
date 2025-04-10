@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Result | TechStorm</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: linear-gradient(135deg, #1e3a8a, #0f172a);
+    }
+    .glass {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+    .glow {
+      text-shadow: 0 0 8px #818cf8, 0 0 20px #6366f1;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center text-white font-sans px-4">
+  <div class="glass max-w-xl w-full rounded-3xl p-10 text-center space-y-6">
+    <h1 class="text-4xl font-extrabold text-indigo-300 glow">TechStorm</h1>
+    <p class="text-sm text-indigo-100 mb-2">Certificate Verification Result</p>
+
+    {% if platform %}
+    <p class="bg-indigo-600 text-white rounded-full py-1 px-4 text-sm inline-block font-semibold shadow-lg">
+      Platform: {{ platform }}
+    </p>
+    {% endif %}
+
+    <div class="bg-white/10 border border-white/20 rounded-lg p-4 text-sm text-indigo-100 text-left overflow-x-auto font-mono shadow-inner max-h-96">
+      <pre class="whitespace-pre-wrap">{{ output }}</pre>
+    </div>
+
+    <a
+      href="/"
+      class="inline-block bg-gradient-to-r from-purple-600 to-indigo-500 hover:from-purple-700 hover:to-indigo-600 text-white px-6 py-2 rounded-xl font-semibold transition-all duration-300 shadow-md"
+    >
+      ⬅️ Back to Upload
+    </a>
+
+    <footer class="pt-6 text-xs text-indigo-200">&copy; 2025 TechStorm. All rights reserved.</footer>
+  </div>
+</body>
+</html>

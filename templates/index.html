@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TechStorm | Upload Certificate</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: linear-gradient(135deg, #1e3a8a, #0f172a);
+    }
+    .glass {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+    .glow {
+      text-shadow: 0 0 8px #818cf8, 0 0 20px #6366f1;
+    }
+    .drag-active {
+      border-color: #818cf8;
+      background-color: rgba(129, 140, 248, 0.1);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center text-white font-sans px-4">
+  <div class="glass max-w-xl w-full rounded-3xl p-10 text-center space-y-6">
+    <h1 class="text-4xl font-extrabold text-indigo-300 glow">TechStorm</h1>
+    <p class="text-sm text-indigo-100 mb-4">AI-powered Certificate Verifier</p>
+
+    <form id="uploadForm" action="/verify" method="POST" enctype="multipart/form-data" class="flex flex-col gap-4">
+      <!-- Drag & Drop Zone -->
+      <label
+        for="certificate"
+        id="dropzone"
+        class="w-full border-2 border-dashed border-indigo-400 rounded-xl px-6 py-10 cursor-pointer transition-all duration-300 hover:border-indigo-500 text-indigo-100 text-sm"
+      >
+        <div id="dropText">
+          📄 Drag & drop your <strong>.PDF</strong> certificate here or click to upload
+        </div>
+        <div id="fileName" class="mt-2 text-indigo-300 font-semibold hidden"></div>
+        <input
+          type="file"
+          name="certificate"
+          id="certificate"
+          accept=".pdf"
+          class="hidden"
+          required
+        />
+      </label>
+
+      <button
+        type="submit"
+        class="w-full bg-gradient-to-r from-purple-600 to-indigo-500 hover:from-purple-700 hover:to-indigo-600 text-white py-2.5 rounded-xl font-semibold transition-all duration-300 shadow-md"
+      >
+        🔍 Verify Certificate
+      </button>
+    </form>
+
+    <footer class="pt-6 text-xs text-indigo-200">&copy; 2025 TechStorm. All rights reserved.</footer>
+  </div>
+
+  <script>
+    const dropzone = document.getElementById('dropzone');
+    const input = document.getElementById('certificate');
+    const fileName = document.getElementById('fileName');
+
+    // Click to open file dialog
+    dropzone.addEventListener('click', () => {
+      if (!input.files.length) {
+        input.click();
+      }
+    });
+
+    // Show selected file name
+    input.addEventListener('change', () => {
+      if (input.files.length) {
+        fileName.textContent = input.files[0].name;
+        fileName.classList.remove('hidden');
+      }
+    });
+
+    // Drag and Drop Events
+    dropzone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropzone.classList.add('drag-active');
+    });
+
+    dropzone.addEventListener('dragleave', () => {
+      dropzone.classList.remove('drag-active');
+    });
+
+    dropzone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropzone.classList.remove('drag-active');
+
+      const file = e.dataTransfer.files[0];
+      if (file && file.type === "application/pdf") {
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+        input.files = dataTransfer.files;
+
+        fileName.textContent = file.name;
+        fileName.classList.remove('hidden');
+
+        // Trigger change event manually
+        input.dispatchEvent(new Event('change'));
+      } else {
+        alert("Please upload a valid PDF file.");
+      }
+    });
+  </script>
+</body>
+</html>
