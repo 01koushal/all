@@ -7,4 +7,4 @@ webdriver-manager
 gunicorn
 PyPDF2
 pyzbar
-
+PIL
