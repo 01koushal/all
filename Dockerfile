@@ -1,24 +1,34 @@
-# Use a fuller Debian-based Python image for easier dependency handling
-FROM python:3.11-bullseye
+FROM python:3.10-slim
 
-# Install zbar and other essential libraries
+# System packages
 RUN apt-get update && apt-get install -y \
+    chromium \
+    chromium-driver \
+    zbar-tools \
     libzbar0 \
-    libzbar-dev \
-    build-essential \
-    && rm -rf /var/lib/apt/lists/*
+    libglib2.0-0 \
+    libnss3 \
+    libgconf-2-4 \
+    libxss1 \
+    libappindicator1 \
+    libatk-bridge2.0-0 \
+    libgtk-3-0 \
+    libasound2 \
+    curl \
+    wget \
+    fonts-liberation \
+    && apt-get clean
 
-# Set work directory
+ENV CHROME_BIN=/usr/bin/chromium
+ENV CHROMEDRIVER_PATH=/usr/bin/chromedriver
+
+# App setup
 WORKDIR /app
+COPY . /app
 
-# Copy all project files
-COPY . .
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
 
-# Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+EXPOSE 8080
 
-# Expose the correct port (match Render settings)
-EXPOSE 10000
-
-# Run the app with Gunicorn
-CMD ["gunicorn", "app:app", "--bind", "0.0.0.0:10000"]
+CMD ["gunicorn", "-b", "0.0.0.0:8080", "app:app"]
